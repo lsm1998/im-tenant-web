@@ -11,11 +11,11 @@ export function index() {
     })
 }
 
-export function checkIn(method: 'get' | 'post', params: object = {}): ApiPromise {
+export function login(params: anyObj): ApiPromise {
     return createAxios({
-        url: controllerUrl + 'checkIn',
+        url: controllerUrl + 'login',
+        method: 'post',
         data: params,
-        method: method,
     }) as ApiPromise
 }
 

@@ -111,7 +111,7 @@ import {buildCaptchaUrl, sendEms, sendSms} from '/@/api/common'
 import {uuid} from '/@/utils/random'
 import {useI18n} from 'vue-i18n'
 import {buildValidatorData, validatorAccount} from '/@/utils/validate'
-import {checkIn, retrievePassword} from '/@/api/frontend/user/index'
+import {checkIn, login, retrievePassword} from '/@/api/frontend/user/index'
 import {useEventListener} from '@vueuse/core'
 import {onResetForm} from '/@/utils/common'
 import {useUserInfo} from '/@/stores/userInfo'
@@ -240,16 +240,36 @@ const onSubmit = (formRef: FormInstance | undefined = undefined) => {
     formRef!.validate((valid) => {
         if (valid) {
             state.formLoading = true
-            checkIn('post', state.form)
+            login(state.form)
                 .then((res) => {
-                    state.formLoading = false
                     userInfo.dataFill(res.data.userInfo)
-                    router.push({path: res.data.routePath})
+                    router.push({path: '/user'})
                 })
                 .catch(() => {
-                    state.formLoading = false
                     onChangeCaptcha()
-                })
+                    // todo 测试
+                    router.push({path: '/user'})
+                    userInfo.dataFill({
+                        "id": 1,
+                        "username": "user",
+                        "nickname": "User",
+                        "email": "user@buildadmin.com",
+                        "mobile": "18888888889",
+                        "avatar": "https:\/\/demo.buildadmin.com\/storage\/default\/20220920\/4f4d41d0860d8a1e9c07c199a40da39244f55d46.jpg",
+                        "gender": 2,
+                        "birthday": "2022-05-13",
+                        "money": "10.00",
+                        "score": 10,
+                        "lastlogintime": 1677682849,
+                        "lastloginip": "113.116.131.103",
+                        "jointime": 1648156017,
+                        "motto": "",
+                        "token": "cfc628bc-94c1-4a8a-b0b7-f501575df616",
+                        "refreshToken": ""
+                    })
+                }).finally(() => {
+                state.formLoading = false
+            })
         } else {
             onChangeCaptcha()
         }
@@ -310,12 +330,6 @@ const sendRetrieveCaptcha = (formRef: FormInstance | undefined = undefined) => {
     })
 }
 
-const switchTab = (formRef: FormInstance | undefined = undefined, tab: 'login' | 'register') => {
-    state.form.tab = tab
-    if (tab == 'register') state.form.username = ''
-    if (formRef) formRef.clearValidate()
-}
-
 const startTiming = (seconds: number) => {
     state.codeSendCountdown = seconds
     timer = setInterval(() => {
@@ -340,8 +354,6 @@ onMounted(async () => {
     //     state.accountVerificationType = res.data.accountVerificationType
     //     state.retrievePasswordForm.type = res.data.accountVerificationType.length > 0 ? res.data.accountVerificationType[0] : ''
     // })
-
-    if (route.query.type == 'register') state.form.tab = 'register'
 })
 onUnmounted(() => {
     state.codeSendCountdown = 0

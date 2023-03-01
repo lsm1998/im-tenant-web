@@ -68,7 +68,6 @@ import { useSiteConfig } from '/@/stores/siteConfig'
 import { useConfig } from '/@/stores/config'
 import { useMemberCenter } from '/@/stores/memberCenter'
 import { editDefaultLang } from '/@/lang/index'
-import { index } from '/@/api/frontend/index'
 import Aside from '/@/layouts/frontend/components/aside.vue'
 import DarkSwitch from '/@/layouts/common/components/darkSwitch.vue'
 import toggleDark from '/@/utils/useDark'
@@ -93,8 +92,6 @@ switch (route.name) {
         state.activeMenu = 'user'
         break
 }
-
-index()
 </script>
 
 <style scoped lang="scss">
