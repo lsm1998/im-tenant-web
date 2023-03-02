@@ -120,6 +120,7 @@ import {useRoute} from 'vue-router'
 import loginMounted from '/@/components/mixins/loginMounted'
 import LoginFooterMixin from '/@/components/mixins/loginFooter.vue'
 import type {FormItemRule, FormInstance} from 'element-plus'
+import {dayjs} from "element-plus";
 
 let timer: NodeJS.Timer
 
@@ -249,20 +250,21 @@ const onSubmit = (formRef: FormInstance | undefined = undefined) => {
                     onChangeCaptcha()
                     // todo 测试
                     router.push({path: '/user'})
+
                     userInfo.dataFill({
                         "id": 1,
                         "username": "user",
                         "nickname": "User",
                         "email": "user@buildadmin.com",
                         "mobile": "18888888889",
-                        "avatar": "https:\/\/demo.buildadmin.com\/storage\/default\/20220920\/4f4d41d0860d8a1e9c07c199a40da39244f55d46.jpg",
+                        "avatar": "https://demo.buildadmin.com/storage/default/20220920/4f4d41d0860d8a1e9c07c199a40da39244f55d46.jpg",
                         "gender": 2,
                         "birthday": "2022-05-13",
-                        "money": "10.00",
+                        "money": parseInt("10.00"),
                         "score": 10,
-                        "lastlogintime": 1677682849,
+                        "lastlogintime": new Date(1677682849*1000).toString(),
                         "lastloginip": "113.116.131.103",
-                        "jointime": 1648156017,
+                        "jointime":  dayjs(1677682849*1000).format('YYYY-MM-DD'),
                         "motto": "",
                         "token": "cfc628bc-94c1-4a8a-b0b7-f501575df616",
                         "refreshToken": ""
